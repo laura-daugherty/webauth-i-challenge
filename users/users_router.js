@@ -1,6 +1,6 @@
 const express = require('express');
 
-const Users = require('./users-model.js');
+const Users = require('./users_model.js');
 
 const router = express.Router();
 
@@ -13,3 +13,5 @@ router.get('/', (req, res) => {
     res.status(500).json({message: "Big ole error"})
   }) 
 });
+
+module.exports = router;

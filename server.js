@@ -1,5 +1,7 @@
 const express = require('express');
-const bcrypt = require('bcryptjs')
+// const bcrypt = require('bcryptjs');
+const cors = require('cors');
+
 
 const UsersRouter = require('./users/users_router.js');
 
