@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-session-knex": "^1.4.0",
     "cors": "^2.8.5",
+    "express-session": "^1.16.2",
     "knex-cleaner": "^1.3.0"
   }
 }

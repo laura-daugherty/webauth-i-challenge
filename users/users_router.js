@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
 const Users = require('./users_model.js');
 const restricted = require('../auth/auth_model')
@@ -15,28 +15,6 @@ router.get('/', restricted, (req, res) => {
   })
   .catch(err => res.send(err)) 
 });
-
-// router.get('/', (req, res) => {
-//   let {username, password} = req.headers
-//   Users.findBy({username})
-//   .first()
-//   .then(user => {
-//     if (user && bcrypt.compare(password, user.password)) {
-//       Users.getUsers()
-//       .then(users => {
-//         res.status(200).json(users)
-//       })
-//       .catch(err => {
-//         res.status(500).json({message: "Big ole error"})
-//       }) 
-//     } else {
-//       res.status(500).json("You're not authorized to do that")
-//     }  
-//   })
-//   .catch(error => {
-//     res.status(500).json(error)
-//   })
-// });
 
 
 router.post('/register', (req, res) => {
@@ -60,7 +38,9 @@ router.post('/login', (req, res) => {
   Users.findBy({username})
   .first()
   .then(user => {
-    if (user && bcrypt.compare(password, user.password)) {
+    if (user && bcrypt.compareSync(password, user.password)) {
+      req.session.movie = "Man with a pillow for a face"; //can save whatever I want to the session?
+      req.session.username = user.username; //only after a successful login
       res.status(200).json({message: `Welcome ${user.username}`})
     } else {
       res.status(500).json(error)
@@ -71,11 +51,17 @@ router.post('/login', (req, res) => {
   })
 })
 
-router.post('/hash', (req, res) => {
-  const password = req.body.password;
-  //hash the password
-  const hash = bcrypt.hashSync(password, 8);
-  res.status(200).json({ password, hash })
+router.get('/logout', (req, res) => {
+  req.session.destroy(function(err) {
+    res.status(200).json({ bye: 'Laura'})
+  })
 })
+
+// router.post('/hash', (req, res) => {
+//   const password = req.body.password;
+//   //hash the password
+//   const hash = bcrypt.hashSync(password, 8);
+//   res.status(200).json({ password, hash })
+// })
 
 module.exports = router;
